@@ -10,18 +10,23 @@ namespace kafkaProducer
     {
         public void Produce(string message)
         {
+            Console.WriteLine("Inside Produce method");
             var config = new Dictionary<string, object>
             {
                 {"bootstrap.servers", "35.200.241.185:9092" }
             };
 
+            Console.WriteLine("Config set");
             try
            {
                using (var producer = new Producer<Null, string>(config, null, new StringSerializer(Encoding.UTF8)))
                {
+                    Console.WriteLine($"Config {config["bootstrap.servers"].ToString()}");
                    //producer.ProduceAsync("simpletest", null, message).GetAwaiter().GetResult();
                    //producer.Flush(100);
+                   
                    var dr = producer.ProduceAsync("simpletest", null, message).Result;
+                   Console.WriteLine($"ProduceAsync called...{dr}");
                    Console.WriteLine($"Delivered '{dr.Value}' to: {dr.TopicPartitionOffset}");
                    //producer.Flush(100);
                };
