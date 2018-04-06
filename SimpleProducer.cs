@@ -25,10 +25,15 @@ namespace kafkaProducer
                    //producer.ProduceAsync("simpletest", null, message).GetAwaiter().GetResult();
                    //producer.Flush(100);
                    
-                   var dr = producer.ProduceAsync("simpletest", null, message).Result;
-                   Console.WriteLine($"ProduceAsync called...{dr}");
-                   Console.WriteLine($"Delivered '{dr.Value}' to: {dr.TopicPartitionOffset}");
-                   //producer.Flush(100);
+                   //var dr = producer.ProduceAsync("simpletest", null, message).Result;
+                   var deliveryReport = producer.ProduceAsync("simpletest", null, message);
+                    deliveryReport.ContinueWith(task =>
+                    {
+                        Console.WriteLine($"Partition: {task.Result.Partition}, Offset: {task.Result.Offset}, Error: {task.Result.Error}");
+                    });
+                   Console.WriteLine($"ProduceAsync called...{deliveryReport}");
+                   //Console.WriteLine($"Delivered '{dr.Value}' to: {dr.TopicPartitionOffset}");
+                   producer.Flush(TimeSpan.FromSeconds(10));
                };
            }
            catch (Exception ex)
