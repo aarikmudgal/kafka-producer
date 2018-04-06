@@ -40,7 +40,8 @@ namespace kafkaProducer
 
                     for (var i = 0; i < 10; i++)
                     {
-                        var result = producer.ProduceAsync("Testing", $"key-{i}", $"Testing #{i}-{DateTime.Now.ToLongTimeString()}");//.Result;
+                    //$"key-{i}"
+                        var result = producer.ProduceAsync("Testing", null, $"Testing #{i}-{DateTime.Now.ToLongTimeString()}");//.Result;
                         result.ContinueWith(res =>
                         {
                             Console.WriteLine(
