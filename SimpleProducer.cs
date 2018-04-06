@@ -15,11 +15,22 @@ namespace kafkaProducer
                 {"bootstrap.servers", "35.200.218.194:9092" }
             };
 
-            using (var producer = new Producer<Null, string>(config, null, new StringSerializer(Encoding.UTF8)))
-            {
-                producer.ProduceAsync("simpletest", null, message).GetAwaiter().GetResult();
-                producer.Flush(100);
-            };
+            try
+           {
+               using (var producer = new Producer<Null, string>(config, null, new StringSerializer(Encoding.UTF8)))
+               {
+                   //producer.ProduceAsync("simpletest", null, message).GetAwaiter().GetResult();
+                   //producer.Flush(100);
+                   var dr = producer.ProduceAsync("simpletest", null, message).Result;
+                   Console.WriteLine($"Delivered '{dr.Value}' to: {dr.TopicPartitionOffset}");
+                   //producer.Flush(100);
+               };
+           }
+           catch (Exception ex)
+           {
+
+               Console.WriteLine(ex.Message + ". Inner Exception - " + ex.InnerException.Message);
+           }
         }
     }
 }
