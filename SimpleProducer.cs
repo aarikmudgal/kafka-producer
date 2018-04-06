@@ -22,7 +22,7 @@ namespace kafkaProducer
            {
                using (var producer = new Producer<Null, string>(config, null, new StringSerializer(Encoding.UTF8)))
                {
-                    ////Console.WriteLine($"Config {config["bootstrap.servers"].ToString()}");
+                    Console.WriteLine($"Config {config["bootstrap.servers"].ToString()}");
                    //producer.ProduceAsync("simpletest", null, message).GetAwaiter().GetResult();
                    //producer.Flush(100);
                    
@@ -40,12 +40,12 @@ namespace kafkaProducer
                     for (var i = 0; i < 10; i++)
                     {
                         var result = producer.ProduceAsync("Testing", $"key-{i}", $"Testing #{i}-{DateTime.Now.ToLongTimeString()}");//.Result;
-
                         result.ContinueWith(res =>
                         {
                             Console.WriteLine(
                                 $"Partition: {res.Result.Partition}, Offset: {res.Result.Offset}, {res.Result.Key} {res.Result.Value}");
                         });
+                        Console.WriteLine($"ProduceAsync called...{result}");
                     }
                     producer.Flush(TimeSpan.FromSeconds(10));
                };
