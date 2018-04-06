@@ -12,7 +12,7 @@ namespace kafkaProducer
         {
             var config = new Dictionary<string, object>
             {
-                {"bootstrap.servers", "35.200.150.160:9092" }
+                {"bootstrap.servers", "35.200.218.194:9092" }
             };
 
             using (var producer = new Producer<Null, string>(config, null, new StringSerializer(Encoding.UTF8)))
