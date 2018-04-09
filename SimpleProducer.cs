@@ -19,42 +19,18 @@ namespace kafkaProducer
             };
 
             Console.WriteLine("Config set");
-            try
+             try
            {
                using (var producer = new Producer<Null, string>(config, null, new StringSerializer(Encoding.UTF8)))
                {
-                    Console.WriteLine($"Config {config["bootstrap.servers"].ToString()}");
-                   //producer.ProduceAsync("simpletest", null, message).GetAwaiter().GetResult();
-                   //producer.Flush(100);
-                   
-                   //var dr = producer.ProduceAsync("simpletest", null, message).Result;
-                  //// var deliveryReport = producer.ProduceAsync("simpletest", null, message);
-                    ////deliveryReport.ContinueWith(task =>
-                    ////{
-                     ////   Console.WriteLine($"Partition: {task.Result.Partition}, Offset: {task.Result.Offset}, Error: {task.Result.Error}");
-                  //// });
-                   ////Console.WriteLine($"ProduceAsync called...{deliveryReport}");
-                   //Console.WriteLine($"Delivered '{dr.Value}' to: {dr.TopicPartitionOffset}");
-                   ////producer.Flush(TimeSpan.FromSeconds(10));
-                    var tasks = new List<Task<Message<string, string>>>();
-
-                    for (var i = 0; i < 10; i++)
-                    {
-                    //$"key-{i}"
-                        var result = producer.ProduceAsync("Testing", null, $"Testing #{i}-{DateTime.Now.ToLongTimeString()}");//.Result;
-                        result.ContinueWith(res =>
-                        {
-                            Console.WriteLine(
-                                $"Partition: {res.Result.Partition}, Offset: {res.Result.Offset}, {res.Result.Key} {res.Result.Value}");
-                        });
-                        Console.WriteLine($"ProduceAsync called...{result}");
-                    }
-                    producer.Flush(TimeSpan.FromSeconds(10));
+                   producer.OnLog += Loggers.ConsoleLogger;
+                   producer.OnError += Producer_OnError;
+                   var result = producer.ProduceAsync("simpletest", null, message).Result;
+                   Console.WriteLine($"----- Delivered '{result.Value}' to: {result.TopicPartitionOffset}");
                };
            }
            catch (Exception ex)
            {
-
                Console.WriteLine(ex.Message + ". Inner Exception - " + ex.InnerException.Message);
            }
         }
