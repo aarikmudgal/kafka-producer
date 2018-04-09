@@ -4,3 +4,4 @@ WORKDIR /app
 COPY *.csproj /app
 RUN dotnet restore
 COPY . /app
+CMD ["dotnet", "run"]
