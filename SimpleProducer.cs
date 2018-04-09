@@ -34,5 +34,9 @@ namespace kafkaProducer
                Console.WriteLine(ex.Message + ". Inner Exception - " + ex.InnerException.Message);
            }
         }
+        private void Producer_OnError(object sender, Error e)
+        {
+            Console.WriteLine($"ERROR ****** Error code: {e.Code}, Reason: {e.Reason} ***** ");
+        }
     }
 }
