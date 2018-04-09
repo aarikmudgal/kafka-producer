@@ -18,7 +18,26 @@ namespace kafkaProducer
                 {"debug", "all"},
                 { "produce.offset.report", true }
             };
+            
+            Product p1 = new Product
+            {
+                Name = "Product 1",
+                Price = 99.95m,
+                ExpiryDate = new DateTime(2000, 12, 29, 0, 0, 0, DateTimeKind.Utc),
+            };
+            Product p2 = new Product
+            {
+                Name = "Product 2",
+                Price = 12.50m,
+                ExpiryDate = new DateTime(2009, 7, 31, 0, 0, 0, DateTimeKind.Utc),
+            };
 
+            List<Product> products = new List<Product>();
+            products.Add(p1);
+            products.Add(p2);
+
+            message = JsonConvert.SerializeObject(products, Formatting.Indented);
+            
             Console.WriteLine("Config set");
              try
            {
