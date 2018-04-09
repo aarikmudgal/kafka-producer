@@ -15,6 +15,7 @@ namespace kafkaProducer
             var config = new Dictionary<string, object>
             {
                 {"bootstrap.servers", "35.200.241.185:9092" },
+                {"debug", "all"},
                 { "produce.offset.report", true }
             };
 
