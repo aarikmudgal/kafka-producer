@@ -5,3 +5,5 @@ COPY *.csproj /app
 RUN dotnet restore
 COPY . /app
 CMD ["dotnet", "run"]
+EXPOSE 9092
+EXPOSE 2181
